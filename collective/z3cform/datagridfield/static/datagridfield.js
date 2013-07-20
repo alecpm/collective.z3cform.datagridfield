@@ -345,8 +345,11 @@ jQuery(function($) {
 
         // Expand jQuery z3c.form widget selection to cover checkbox <input>s
         function expandAllZ3CFormInputs(sel) {
-            var checkboxes = sel.children(".option");
+            var checkboxes = sel.find(".option");
             sel = sel.add(checkboxes);
+            // Ordered selection field uses a table containing multi-selects
+            var in_outs = sel.find('table td')
+            sel = sel.add(in_outs);
 
             var datetimedropdowns = sel.children(".datetimepicker_input").find("select").parent();
             sel = sel.add(datetimedropdowns);
