@@ -354,6 +354,17 @@ jQuery(function($) {
             var datetimedropdowns = sel.children(".datetimepicker_input").find("select").parent();
             sel = sel.add(datetimedropdowns);
 
+            // Autocomplete/Contenttree stuff
+            var autocomplete_div = sel.find('.autocompleteInputWidget');
+            var autocomplete_parent = sel.find('.autocompleteInputWidget').parent();
+            var autocomplete_search = sel.find('.querySelectSearch');
+            var autocomplete_search_children = sel.find('.querySelectSearch').children();
+            sel = sel.add(autocomplete_parent).add(autocomplete_div)
+            sel = sel.add(autocomplete_search).add(autocomplete_search_children);
+
+            var contenttree_window= sel.find('.contenttreeWindow');
+            sel = sel.add(contenttree_window);
+
             return sel;
         }
 
@@ -402,6 +413,14 @@ jQuery(function($) {
         cells.children('[id*="' + id_prefix +'"]').each(function(){
             var regexp = new RegExp(id_prefix + ".*?-");
             this.id = this.id.replace(regexp, id_prefix + newindex + "-");
+        });
+
+        cells.children('[data-fieldname*="' + id_prefix.replace(/-/g, '.') +'"]').each(function(){
+            var dotted_prefix = id_prefix.replace(/-/g, '.');
+            var regexp = new RegExp(dotted_prefix.replace(/\./g, '\\.') + ".*?\\.");
+            var fieldname = this.attributes['data-fieldname'].nodeValue;
+            fieldname = fieldname.replace(regexp, dotted_prefix + newindex + ".");
+            this.setAttribute('data-fieldname', fieldname);
         });
 
         cells.children('[for*="' + id_prefix +'"]').each(function(){
